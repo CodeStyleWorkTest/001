@@ -1,0 +1,408 @@
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+
+## Variables
+
+
+
+        set $modkey Mod4
+        set $altkey Mod1
+        set $AltRight Mod5
+        set $controlkey CTRL
+        
+        set $left h
+        set $down j
+        set $up k
+        set $right l
+
+        set $term alacritty
+      
+
+        #set $menu_cmd bemenu-run -p "#! " -l 7 -i -P "→" 
+        #set $menu dmenu_path | $menu_cmd | xargs swaymsg exec --
+
+
+
+        #set $menu drop.terminal.sh \ 
+        #for_window [app_id="dropterminal"] border pixel 0, \
+        #for_window [app_id="dropterminal"] floating enable, \
+        #for_window [app_id="dropterminal"] sticky enable, \
+        #for_window [app_id="dropterminal"] resize set width 1366 height 250, \
+        #for_window [app_id="dropterminal"] move position 0 0
+
+
+        set $menu_cmd  wofi -p " " --dmenu  -b  -x 0 -y 0 -e -q -W 1366 -H 250  -C ~/.config/wofi/color
+        set $menu dmenu_path | $menu_cmd | xargs swaymsg exec --
+
+
+
+
+
+        bindsym $modkey+r exec $menu
+
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+output * bg /home/user/.base/wallpaper.sway fill
+#output * bg #000000
+#
+# Example configuration:
+#
+#   output HDMI-A-1 resolution 1920x1080 position 1920,0
+#
+# You can get the names of your outputs by running: swaymsg -t get_outputs
+
+
+
+
+
+
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * dpms off"' \
+#               resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+### Input configuration
+#
+# Example configuration:
+#
+#   input "2:14:SynPS/2_Synaptics_TouchPad" {
+#       dwt enabled
+#       tap enabled
+#       natural_scroll enabled
+#       middle_emulation enabled
+#   }
+#
+# You can get the names of your inputs by running: swaymsg -t get_inputs
+# Read `man 5 sway-input` for more information about this section.
+input * xkb_layout "latam"
+### Key bindings
+#
+# Basics:
+#
+
+#titlebar_border_thickness 0 
+#titlebar_padding 0
+
+#for_window [class="^.*"] border pixel 1
+#for_window [class="^.*"] padding pixel 1
+#for_window 1pixel
+
+  #awful.key({}, "XF86MonBrightnessDown", function () awful.spawn("xbacklight -dec 10") end,
+
+  #bindsym XF86MonBrightnessDown exec xargs swaymsg exec xbacklight -dec 10
+    
+    bindsym XF86MonBrightnessUp exec  brightnessctl  s 10%+
+    bindsym XF86MonBrightnessDown exec  brightnessctl  s 10%-
+
+
+    #  set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+    
+
+
+
+    # aplicaciones
+
+    bindsym XF86AudioMute exec pamixer -t
+    bindsym XF86AudioLowerVolume exec pamixer -d 5
+    bindsym XF86AudioRaiseVolume exec pamixer -i 5
+    
+    bindsym $AltRight+XF86AudioLowerVolume exec cmus-remote -r
+    bindsym $AltRight+XF86AudioRaiseVolume exec cmus-remote -n 
+    bindsym $controlkey+a exec cmus-remote -P "$(cmus-remote -Q | grep file | cut -c 6-)"
+
+    # equalizador 
+
+    bindsym $altkey+e exec qpaeq
+
+    # captura
+    bindsym Print exec →screenshot
+    bindsym $altkey+Shift+p exec →picker
+  
+    
+    # Start a terminal
+    bindsym $modkey+Return exec $term
+    bindsym $controlkey+Return exec $term
+
+    # Kill focused window
+    bindsym $modkey+Shift+c kill
+
+    # Start your launcher
+    #bindsym $modkey+r exec $menu
+
+    # Drag floating windows by holding down $modkey and left mouse button.
+    # Resize them with right mouse button + $modkey.
+    # Despite the name, also works for non-floating windows.
+    # Change normal to inverse to use left mouse button for resizing and right
+    # mouse button for dragging.
+    floating_modifier $modkey normal
+
+    # Reload the configuration file
+    bindsym $modkey+Shift+r reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $modkey+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+#
+# Moving around:
+#
+    # Move your focus around
+    #bindsym $modkey+$left focus left
+    #bindsym $modkey+$down focus down
+    #bindsym $modkey+$up focus up
+    #bindsym $modkey+$right focus right
+    # Or use $modkey+[up|down|left|right]
+    #bindsym $modkey+Left focus left
+    #bindsym $modkey+Down focus down
+    #bindsym $modkey+Up focus up
+    #bindsym $modkey+Right focus right
+
+    bindsym $altkey+tab focus prev
+    bindsym $controlkey+Right focus next
+    bindsym $controlkey+Left focus prev
+
+
+
+    # Move the focused window with the same, but add Shift
+    bindsym $modkey+Shift+$left move left
+    bindsym $modkey+Shift+$down move down
+    bindsym $modkey+Shift+$up move up
+    bindsym $modkey+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $modkey+Shift+Left move left
+    bindsym $modkey+Shift+Down move down
+    bindsym $modkey+Shift+Up move up
+    bindsym $modkey+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    
+
+    bindsym $modkey+right workspace next
+    bindsym $modkey+left workspace prev
+    bindsym $modkey+$right workspace next
+    bindsym $modkey+$left workspace prev
+
+    bindsym $modkey+tab workspace next
+
+    bindsym $modkey+i  workspace init
+    bindsym $modkey+w  workspace web
+    bindsym $modkey+g  workspace graph
+    bindsym $modkey+c  workspace chat
+    bindsym $modkey+m  workspace media
+    bindsym $modkey+o  workspace other
+    # Move focused container to workspace
+    bindsym $modkey+$AltRight+i move container to workspace init
+    bindsym $modkey+$AltRight+w move container to workspace web
+    bindsym $modkey+$AltRight+g move container to workspace graph
+    bindsym $modkey+$AltRight+c move container to workspace chat
+    bindsym $modkey+$AltRight+m move container to workspace media
+    bindsym $modkey+$AltRight+o move container to workspace other
+
+
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $modkey+b or $modkey+v, for horizontal and vertical splits
+    # respectively.
+    #bindsym $modkey+b splith
+    #bindsym $modkey+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $AltRight+1 layout toggle split
+    bindsym $AltRight+2 layout tabbed
+    bindsym $AltRight+3 layout stacking
+
+    # Make the current focus fullscreen
+    bindsym $modkey+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $modkey+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $modkey+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $modkey+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $modkey+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $modkey+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym minus resize shrink width 10px
+    bindsym Up resize grow height 10px
+    bindsym Down resize shrink height 10px
+    bindsym plus resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $AltRight+r mode "resize"
+
+
+
+
+
+set $Acent  #ff980b 
+set $FocusText  #ff980b 
+set $Dark #1C1C1C
+set $UnfocusText #fcefef
+
+
+
+
+
+
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+
+
+#set $bbb exec ~/toggle-bar
+# toggle 
+
+
+bindsym $AltRight+Escape exec swaymsg bar mode toggle
+bar {
+  #position top
+  #mode hide
+  # modifier $modkey
+  #hidden_state show
+  #status_padding 4
+  #status_edge_padding 6
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    #status_command while date +'%Y-%m-%d %l:%M:%S %p'; do sleep 1; done
+    #status_command while date +'%d-%m-%Y %l:%M:%S %p'; do sleep 1; done
+    status_command while ~/.config/sway/bar.sh ; do sleep 1; done
+
+    font pango:SourceCodePro SemiBold 11
+
+    #gaps 400 100
+    #height 100
+    colors {
+      statusline $Acent
+      background $Dark
+      inactive_workspace $Dark $Dark #ff980b 
+      focused_workspace #ff980b #ff980b $Dark
+      }
+}
+
+
+
+
+
+# class                 border  backgr.   text          indicator child_border
+client.focused          $Dark    $Acent   $Dark         $Dark      $Dark
+client.focused_inactive $Dark    $Dark    $UnfocusText  $Dark      $Dark
+client.unfocused        $Dark    $Dark    $UnfocusText  $Dark      $Dark
+
+client.urgent           #2f343a #900000 $UnfocusText #900000   #900000
+client.placeholder      #000000 #222222 $UnfocusText #000000   #222222
+
+#client.background       #ffffff
+
+#xwayland disable
+
+workspace_layout default
+# for_window [class="^.*"] border none
+
+
+assign [app_id="Alacritty"] init
+assign [app_id="gpodder"] media
+assign [app_id="io.github.celluloid_player.Celluloid"] media
+assign [app_id="firefox"] web
+assign [app_id="telegramdesktop"] chat
+assign [class="Gimp"] graph
+assign [class="Sxiv"] graph
+assign [app_id="org.qutebrowser.qutebrowser"] web
+assign [app_id="Editorweb" title="editor" ] web
+assign [class="qutebrowser"] web
+#assign [app_id=null title="^Spotifyi*"] media
+#assign [app_id="^"]  other
+
+for_window [class="Spotify"] move to workspace media
+#for_window [class="Mpv"] floating enable
+#for_window [app_id="Picture-in-Picture"] floating enable
+#for_window [app_id="firefox" title="^Picture-in-Picture$"] floating enable
+
+
+for_window [class="qpaeq"] floating enable, sticky enable
+for_window [app_id="pavucontrol"] floating enable, sticky enable
+for_window [app_id="org.gnome.Nautilus"] floating enable
+#for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, \
+#    move absolute position 200px 20px, risize  400 300
+
+
+for_window [app_id="^"] border pixel 0
+for_window [title="^"] border pixel 0
+#for_window [app_id="firefox"] border pixel 0
+for_window [app_id="firefox" title="Picture-in-Picture"] floating enable, sticky enable, \
+    resize set width 401 height 235, \
+    move position 942 502
+
+for_window [app_id="Editorweb" ] floating enable, \
+    resize set width 1366 height 250, \
+    move position 0 463
+    #move position 0 530
+    #1366x768
+
+
+font pango:SourceCodePro SemiBold 10
+
+#bindsym $modkey+Shift+space floating toggle
+
+
+exec swaymsg "exec kdeconnect-start"
+
+#exec \
+    #swaymsg "workspace web"; \
+    #swaymsg "layout splitv"; \
+    #sleep 0.3s; \
+    #swaymsg "workspace init";\
+
+
+
+
+
+include /etc/sway/config.d/*
